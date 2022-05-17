@@ -4,18 +4,18 @@ import * as contactsAPI from '../../services/contactsAPI';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 //!=============Используем createAsyncThunk===================
-export const fetchContacts = createAsyncThunk(
-  'contacts/fetchContacts',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await contactsAPI.fetchContacts();
-      return response;
-    } catch (err) {
-      toast(`${err.message}. Try reloading the page`);
-      return rejectWithValue(err.response.statusText);
-    }
-  }
-);
+// export const fetchContacts = createAsyncThunk(
+//   'contacts/fetchContacts',
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const response = await contactsAPI.fetchContacts();
+//       return response;
+//     } catch (err) {
+//       toast(`${err.message}. Try reloading the page`);
+//       return rejectWithValue(err.response.statusText);
+//     }
+//   }
+// );
 
 export const addContact = createAsyncThunk(
   'contacts/addContact',
@@ -29,18 +29,18 @@ export const addContact = createAsyncThunk(
     }
   }
 );
-export const removeContact = createAsyncThunk(
-  'contacts/removeContact',
-  async (contactId, { rejectWithValue }) => {
-    try {
-      const removedContact = await contactsAPI.removeContact(contactId);
-      return removedContact;
-    } catch (err) {
-      toast(`${err.message}. Try reloading the page`);
-      return rejectWithValue(err.response.statusText);
-    }
-  }
-);
+// export const removeContact = createAsyncThunk(
+//   'contacts/removeContact',
+//   async (contactId, { rejectWithValue }) => {
+//     try {
+//       const removedContact = await contactsAPI.removeContact(contactId);
+//       return removedContact;
+//     } catch (err) {
+//       toast(`${err.message}. Try reloading the page`);
+//       return rejectWithValue(err.response.statusText);
+//     }
+//   }
+// );
 
 //====================================================
 // export const fetchContacts = () => async dispatch => {
