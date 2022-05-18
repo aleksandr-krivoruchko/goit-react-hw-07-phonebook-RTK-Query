@@ -1,35 +1,30 @@
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-
-// import * as contactsOperations from '../../redux/contacts/contactsOperations';
-import { useFilter } from '../../redux/slice.js';
-
+import { useSelector } from 'react-redux';
 import { Contact } from '../Contact/Contact';
+// import { useFetchContactsQuery, useAddContactMutation, useDeleteContactMutation } from '../../redux/contactsRTKQ';
 
-import { useFetchContactsQuery } from '../../redux/contacts/contactsRTKQ';
-
-export function ContactsList() {
-  const { filteredContacts, deleteContact } = useFilter();
-  const dispatch = useDispatch();
-
-  const { data, error, isLoading } = useFetchContactsQuery();
-  console.log(data);
-
-  //   useEffect(() => {
-  //     dispatch(contactsOperations.fetchContacts());
-  //   }, [dispatch]);
+export function ContactsList({contacts}) {
+//   const { data, error, isLoading } = useFetchContactsQuery();
+  const filterValue = useSelector(state => state.filter);
+  
 
   return (
     <ul>
-      {filteredContacts.map(({ number, name, id }) => (
+      {contacts && filterContacts(contacts, filterValue).map(({ number, name, id }) => (
         <Contact
           key={number}
           number={number}
           name={name}
           id={id}
-          deleteContact={() => deleteContact(id)}
         />
       ))}
     </ul>
   );
 }
+
+  function filterContacts(contacts, filterValue) {
+    const normalizedFilter = filterValue.toLowerCase();
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(normalizedFilter)
+    );
+  }
+

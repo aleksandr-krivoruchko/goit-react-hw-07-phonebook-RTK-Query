@@ -1,11 +1,20 @@
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+
 import { Btn, FormStyle, Label, Input } from './FormStyle.styled';
-import { useAddContact } from '../../redux/slice';
+import { checkExistingContact } from "../../services/checkContact";
+import { useAddContactMutation, useFetchContactsQuery } from "../../redux/contactsRTKQ";
 
 export function Form() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const addContact = useAddContact();
+  const { data: contacts } = useFetchContactsQuery();
+  const [addContact, result] = useAddContactMutation();
+      const contact = {
+      name,
+      number
+    }
+
 
   function handleChange(e) {
     const { name, value } = e.currentTarget;
@@ -24,10 +33,18 @@ export function Form() {
     }
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    addContact(name, number);
+    if (checkExistingContact(name, contacts)) {
+      reset();
+       return;
+     }
+try {
+      await addContact(contact);
+} catch (error) {
+      toast(`${error.status}. Try again`);
+}
 
     reset();
   }
@@ -66,7 +83,7 @@ export function Form() {
           autoComplete="off"
         />
       </Label>
-      <Btn type="submit">Add contact</Btn>
+      <Btn type="submit">{!result.isLoading ? 'Add contact' : 'Adding...'}</Btn>
     </FormStyle>
   );
 }

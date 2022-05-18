@@ -5,6 +5,17 @@ export const ContactStyle = styled.li`
   color: yellow;
   font-size: 20px;
   margin-top: 10px;
+/* &:hover{
+    color: blue;
+    &::after{
+  content: 'EDIT';
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-left: 15px;
+  color: green;
+} */
+}
 `;
 
 export const ButtonStyle = styled.button`
@@ -19,4 +30,10 @@ export const ButtonStyle = styled.button`
     border: 2px solid blue;
     color: blue;
   }
+  &:disabled {
+  border-color: red;
+  color: red;
+  }
 `;
+
+

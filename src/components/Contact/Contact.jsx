@@ -1,13 +1,27 @@
 import PropTypes from 'prop-types';
 import { ContactStyle, ButtonStyle } from './ContactStyle.styled';
+import { useDeleteContactMutation, useGetContactByIdQuery, useUpdateContactMutation } from '../../redux/contactsRTKQ';
 
-export function Contact({ number, name, id, deleteContact }) {
+export function Contact({ number, name, id }) {
+    const [deleteContact, result] = useDeleteContactMutation();
+  const { data: updateContactById } = useGetContactByIdQuery(id);
+  const [updateContact, res] = useUpdateContactMutation();
+
+
+  const handleUpdateContact = (id) => {
+    console.log(id);
+  }
+
   return (
-    <ContactStyle id={id}>
-      <ButtonStyle type="button" onClick={() => deleteContact(id)}>
+    <ContactStyle id={id} >
+      <ButtonStyle disabled={result.isLoading} type="button" onClick={() => deleteContact(id)}>
         X
       </ButtonStyle>
-      <p>{`${name}: ${number}`}</p>
+      <p className='text'>{`${name}: ${number}`}</p>
+            <ButtonStyle type="button" onClick={() => handleUpdateContact(id)}>
+        E
+      </ButtonStyle>
+
     </ContactStyle>
   );
 }
