@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-
+import { Loader } from '../Loader/Loader';
 import { Btn, FormStyle, Label, Input } from './FormStyle.styled';
 import { checkExistingContact } from "../../services/checkContact";
 import { useAddContactMutation, useFetchContactsQuery } from "../../redux/contactsRTKQ";
@@ -9,7 +9,7 @@ export function Form() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const { data: contacts } = useFetchContactsQuery();
-  const [addContact, result] = useAddContactMutation();
+  const [addContact, {isLoading}] = useAddContactMutation();
       const contact = {
       name,
       number
@@ -41,7 +41,8 @@ export function Form() {
        return;
      }
 try {
-      await addContact(contact);
+  await addContact(contact);
+  toast(`Contact named ${name} added`);
 } catch (error) {
       toast(`${error.status}. Try again`);
 }
@@ -83,7 +84,8 @@ try {
           autoComplete="off"
         />
       </Label>
-      <Btn type="submit">{!result.isLoading ? 'Add contact' : 'Adding...'}</Btn>
+      <Btn type="submit" disabled={isLoading}>
+        {isLoading ? <Loader title='addition...'/> : 'Add contact'}</Btn>
     </FormStyle>
   );
 }

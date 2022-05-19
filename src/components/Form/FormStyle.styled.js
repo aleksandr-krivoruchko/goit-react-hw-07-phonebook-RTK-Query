@@ -24,10 +24,14 @@ export const Input = styled.input`
   outline: none;
   color: yellow;
   caret-color: yellow;
+  &:focus{
+    border-bottom-color: transparent;
+  }
 `;
 
 export const Btn = styled.button`
-  display: inline-block;
+  display: inline-flex;
+  justify-content: space-between;
   font-size: 20px;
   background-color: transparent;
   color: yellow;
