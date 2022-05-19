@@ -2,19 +2,21 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { Loader } from '../Loader/Loader';
 import { Btn, FormStyle, Label, Input } from './FormStyle.styled';
-import { checkExistingContact } from "../../services/checkContact";
-import { useAddContactMutation, useFetchContactsQuery } from "../../redux/contactsRTKQ";
+import { checkExistingContact } from '../../services/checkContact';
+import {
+  useAddContactMutation,
+  useFetchContactsQuery,
+} from '../../redux/contactsRTKQ';
 
 export function Form() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const { data: contacts } = useFetchContactsQuery();
-  const [addContact, {isLoading}] = useAddContactMutation();
-      const contact = {
-      name,
-      number
-    }
-
+  const [addContact, { isLoading }] = useAddContactMutation();
+  const contact = {
+    name,
+    number,
+  };
 
   function handleChange(e) {
     const { name, value } = e.currentTarget;
@@ -38,14 +40,14 @@ export function Form() {
 
     if (checkExistingContact(name, contacts)) {
       reset();
-       return;
-     }
-try {
-  await addContact(contact);
-  toast(`Contact named ${name} added`);
-} catch (error) {
+      return;
+    }
+    try {
+      await addContact(contact);
+      toast.success(`Contact named ${name} added`);
+    } catch (error) {
       toast(`${error.status}. Try again`);
-}
+    }
 
     reset();
   }
@@ -85,7 +87,8 @@ try {
         />
       </Label>
       <Btn type="submit" disabled={isLoading}>
-        {isLoading ? <Loader title='addition...'/> : 'Add contact'}</Btn>
+        {isLoading ? <Loader title="addition..." /> : 'Add contact'}
+      </Btn>
     </FormStyle>
   );
 }

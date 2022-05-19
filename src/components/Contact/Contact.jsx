@@ -4,12 +4,16 @@ import { Loader } from '../Loader/Loader';
 
 import { ContactStyle, ButtonStyle } from './ContactStyle.styled';
 import { useDeleteContactMutation } from '../../redux/contactsRTKQ';
+import { useEffect } from 'react';
 
 export function Contact({ number, name, id }) {
   const [deleteContact, { isLoading, isSuccess }] = useDeleteContactMutation();
-  if (isSuccess) {
-    toast(`Contact named ${name} deleted`);
-  }
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast(`Contact named ${name} deleted`);
+    }
+  }, [isSuccess, name]);
 
   return (
     <ContactStyle id={id}>
